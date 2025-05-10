@@ -8,19 +8,52 @@
 import SwiftUI
 
 struct ContentView: View {
-    let students = ["Harry", "Hermione", "Ron"]
-    @State private var selectedStudent = "Hermione"
+    @State private var checkAmount = 0.0
+    @State private var numberOfPeople = 2
+    @State private var tipPercentage = 20
+    
+    let tipPercentages = [10, 15, 20, 25, 0]
     
     var body: some View {
-        NavigationStack{
-            Form {
-                Picker("Select your student", selection: $selectedStudent) {
-                    ForEach(students, id: \.self) {
-                        Text($0)
-                    }
-                }
+        Form {
+            Section {
+                TextField("Сумма", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    .keyboardType(.decimalPad)
             }
-            .navigationTitle("Select a Student")
+            Section {
+                TextField("Сумма", value: $checkAmount, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                    .keyboardType(.decimalPad)
+//                TextField("Сумма", text: Binding(
+//                    get: {
+//                        // Преобразуем Double в строку в местной валюте
+//                        checkAmount.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD"))
+//                    },
+//                    set: { newValue in
+//                        // Получаем символ местной валюты
+//                        let currencySymbol = Locale.current.currencySymbol ?? "$"
+//                        // Преобразуем строку обратно в Double
+//                        if let value = Double(newValue.replacingOccurrences(of: currencySymbol, with: "").trimmingCharacters(in: .whitespacesAndNewlines)) {
+//                            checkAmount = value
+//                        }
+//                    }
+//                ))
+//                .keyboardType(.decimalPad) // Удобная клавиатура для ввода чисел
+//                TextField("Сумма", text: Binding(
+//                    get: {
+//                        // Преобразуем Double в строку в местной валюте
+//                        checkAmount.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD"))
+//                    },
+//                    set: { newValue in
+//                        // Получаем символ местной валюты
+//                        let currencySymbol = Locale.current.currencySymbol ?? "$"
+//                        // Преобразуем строку обратно в Double
+//                        if let value = Double(newValue.replacingOccurrences(of: currencySymbol, with: "").trimmingCharacters(in: .whitespacesAndNewlines)) {
+//                            checkAmount = value
+//                        }
+//                    }
+//                ))
+//                .keyboardType(.decimalPad)
+            }
         }
     }
 }
