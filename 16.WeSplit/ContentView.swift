@@ -10,18 +10,21 @@ import SwiftUI
 struct ContentView: View {
     @State private var checkAmount = 0.0    //сумма по чеку
     @State private var numberOfPeople = 2   //количество гостей
-    @State private var tipPercentage = 20   //размер чаевых в процентах
+    @State private var tipPercentage = 10   //размер чаевых в процентах
     @FocusState private var amountIsFocused: Bool   //флаг нахождения фокуса в поле ввода суммы по чеку
     
     let tipPercentages = [10, 15, 20, 25, 0]
     
+    //всего со стола
+    var grandTotal: Double {
+        let tipSelection = Double(tipPercentage)        //чаевые в процентах
+        let tipValue = checkAmount / 100 * tipSelection //чаевые в валюте
+        return checkAmount + tipValue
+    }
+    
     //итого с каждого гостя
     var totalPerPerson: Double {
         let peopleCount = Double(numberOfPeople + 2)    //количество гостей + 2 (у нас доступ лишь к индексам массива, а они на 2 меньше, чем значения)
-        let tipSelection = Double(tipPercentage)        //чаевые в процентах
-        
-        let tipValue = checkAmount / 100 * tipSelection //чаевые в валюте
-        let grandTotal = checkAmount + tipValue         //всего со стола
         let amountPerPerson = grandTotal / peopleCount  //итого с каждого гостя
         
         return amountPerPerson
@@ -44,13 +47,17 @@ struct ContentView: View {
                 }
                 Section("Сколько вы хотите оставить чаевых?") {
                     Picker("Процент чаевых", selection: $tipPercentage) {
-                        ForEach(tipPercentages, id: \.self) {
+                        ForEach(0..<101) {
                             Text($0, format: .percent)
                         }
                     }
-                    .pickerStyle(.segmented)
+                    .pickerStyle(.navigationLink)
                 }
-                Section ("Итого с каждого гостя") {
+                Section("Всего с чаевыми:") {
+                    Text(grandTotal, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                }
+                Section ("Итого:") {
+                    Text("Сумма на человека")
                     Text(totalPerPerson, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
                 }
             }
