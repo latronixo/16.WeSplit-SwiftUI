@@ -12,6 +12,13 @@ struct ContentView: View {
     @State private var numberOfPeople = 2   //количество гостей
     @State private var tipPercentage = 10   //размер чаевых в процентах
     @FocusState private var amountIsFocused: Bool   //флаг нахождения фокуса в поле ввода суммы по чеку
+    private var useRedBackground: Bool {
+        if tipPercentage == 0 {
+            return true
+        } else {
+            return false
+        }
+    }      //флаг использования красного фона в общей сумме
     
     let tipPercentages = [10, 15, 20, 25, 0]
     
@@ -55,6 +62,7 @@ struct ContentView: View {
                 }
                 Section("Всего с чаевыми:") {
                     Text(grandTotal, format: .currency(code: Locale.current.currency?.identifier ?? "USD"))
+                        .background(useRedBackground ? Color.red.opacity(0.3) : Color.white)
                 }
                 Section ("Итого:") {
                     Text("Сумма на человека")
